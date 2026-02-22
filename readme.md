@@ -49,9 +49,9 @@ Se calcularon:
 
 ---
 
-## 📈 Resultados
+## Resultados
 
-### 🔹 Tabla de resultados (lista aleatoria)
+### Tabla de resultados (lista aleatoria)
 
 | Tamaño | Bubble Sort (s) | QuickSort (s) |
 |--------|------------------|---------------|
@@ -62,7 +62,7 @@ Se calcularon:
 
 ---
 
-### 📊 Gráfica comparativa
+### Gráfica comparativa
 
 ![Grafica](Practica%201/Evidencias/grafica_comparativa.png)
 
@@ -79,3 +79,4 @@ En aplicaciones de robótica y procesamiento de datos en tiempo real, QuickSort 
 ---
 
 ## Estructura del repositorio
+
