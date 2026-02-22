@@ -2,6 +2,7 @@ import random
 import timeit
 import statistics
 import csv
+import pandas as pd
 
 
 # ==============================
@@ -74,9 +75,7 @@ def medir_tiempo(funcion, lista, repeticiones=5):
 def main():
 
     tamanos = [100, 1000, 5000, 10000]
-
     repeticiones = 5
-
     resultados = []
 
     print("Evaluando algoritmos...\n")
@@ -88,82 +87,62 @@ def main():
         lista_aleatoria = generar_lista_aleatoria(n)
         lista_invertida = generar_lista_invertida(n)
 
-        # Bubble Sort - Aleatoria
-        tiempos, prom, desv = medir_tiempo(
-            bubble_sort, lista_aleatoria, repeticiones
-        )
+        for algoritmo, funcion in [
+            ("Bubble Sort", bubble_sort),
+            ("QuickSort", quicksort)
+        ]:
 
-        resultados.append([
-            n,
-            "Bubble Sort",
-            "Aleatoria",
-            repeticiones,
-            prom,
-            desv
-        ])
+            for tipo, lista in [
+                ("Aleatoria", lista_aleatoria),
+                ("Invertida", lista_invertida)
+            ]:
 
-        # Bubble Sort - Invertida
-        tiempos, prom, desv = medir_tiempo(
-            bubble_sort, lista_invertida, repeticiones
-        )
+                tiempos, prom, desv = medir_tiempo(
+                    funcion, lista, repeticiones
+                )
 
-        resultados.append([
-            n,
-            "Bubble Sort",
-            "Invertida",
-            repeticiones,
-            prom,
-            desv
-        ])
+                resultados.append([
+                    n,
+                    algoritmo,
+                    tipo,
+                    repeticiones,
+                    prom,
+                    desv
+                ])
 
-        # QuickSort - Aleatoria
-        tiempos, prom, desv = medir_tiempo(
-            quicksort, lista_aleatoria, repeticiones
-        )
+    # ==========================
+    # Crear DataFrame con pandas
+    # ==========================
 
-        resultados.append([
-            n,
-            "QuickSort",
-            "Aleatoria",
-            repeticiones,
-            prom,
-            desv
-        ])
+    columnas = [
+        "Tamano",
+        "Algoritmo",
+        "Tipo Lista",
+        "Repeticiones",
+        "Promedio (s)",
+        "Desviacion Std (s)"
+    ]
 
-        # QuickSort - Invertida
-        tiempos, prom, desv = medir_tiempo(
-            quicksort, lista_invertida, repeticiones
-        )
+    df = pd.DataFrame(resultados, columns=columnas)
 
-        resultados.append([
-            n,
-            "QuickSort",
-            "Invertida",
-            repeticiones,
-            prom,
-            desv
-        ])
+    print("\nTabla de Resultados:\n")
+    print(df)
 
     # ==========================
     # Guardar CSV
     # ==========================
 
-    with open("resultados_ordenamiento.csv", "w", newline="") as archivo:
+    df.to_csv("resultados_ordenamiento.csv", index=False)
 
-        writer = csv.writer(archivo)
+    # ==========================
+    # Guardar Excel (más profesional)
+    # ==========================
 
-        writer.writerow([
-            "Tamano",
-            "Algoritmo",
-            "Tipo Lista",
-            "Repeticiones",
-            "Promedio (s)",
-            "Desviacion Std (s)"
-        ])
+    df.to_excel("resultados_ordenamiento.xlsx", index=False)
 
-        writer.writerows(resultados)
-
-    print("\nResultados guardados en resultados_ordenamiento.csv")
+    print("\nArchivos generados:")
+    print("- resultados_ordenamiento.csv")
+    print("- resultados_ordenamiento.xlsx")
 
 
 # Ejecutar programa
